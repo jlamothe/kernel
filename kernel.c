@@ -3,6 +3,7 @@
 
 void main(void)
 {
+    call_interrupt();
     char *str = "Hello world!\n";
     bwputs(str);
 }
