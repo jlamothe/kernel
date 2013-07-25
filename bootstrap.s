@@ -19,26 +19,26 @@ _start:
 
 catch_interrupt:
         push {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12}
+        mrs r0, SPSR
+        push {r0}
         msr CPSR_c, #0xdf
         mov r0, sp
         mov r1, lr
         msr CPSR_c, #0xd3
         push {r0, r1}
         push {lr}
-        mrs r0, SPSR
-        push {r0}
         mov r12, sp
 
 return_control:
         mov sp, r12
-        pop {r0}
-        msr SPSR, r0
         pop {lr}
         pop {r0, r1}
         msr CPSR_c, #0xdf
         mov sp, r0
         mov lr, r1
         msr CPSR_c, #0xd3
+        pop {r0}
+        msr SPSR, r0
         pop {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12}
         movs pc, lr
 
