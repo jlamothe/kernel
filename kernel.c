@@ -1,12 +1,13 @@
-#include "versatilepb.h"
-#include "kernel.h"
+/*
+ * INCLUDES
+ */
 
-void main(void)
-{
-    call_interrupt();
-    char *str = "Hello world!\n";
-    bwputs(str);
-}
+#include "kernel.h"
+#include "versatilepb.h"
+
+/*
+ * FUNCTION DEFINITIONS
+ */
 
 void bwputs(char *s)
 {
@@ -17,3 +18,14 @@ void bwputs(char *s)
         s++;
     }
 }
+
+void my_memcpy(void *dest, void *src, int size)
+{
+    int i;
+    if(size < 0)
+        return;
+    for(i = 0; i < size; i++)
+        ((char *)dest)[i] = ((char *)src)[i];
+}
+
+/* jl */
