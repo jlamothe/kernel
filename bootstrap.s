@@ -28,11 +28,11 @@ resume_thread:
 
         /* Get last process data: */
         mov r0, sp              /* SysStruct */
-        sub sp, #0x40           /* make room on the stack */
+        sub sp, #0x44           /* make room on the stack */
         mov r1, sp              /* buffer */
         bl get_last_proc_data
 
-        pop {r1, r2}            /* lr & pc */
+        pop {r0, r1, r2}        /* sp, lr & pc */
         mov lr, r2              /* save pc for later */
 
         /* Set sytem sp and lr: */
@@ -61,16 +61,18 @@ catch_sw_interrupt:
 
         /* Get user sp, lr & pc: */
         msr CPSR_c, #0xdf       /* system mode */
-        mov r0, lr
-        mov r1, sp
+        mov r0, sp
+        mov r1, lr
         msr CPSR_c, #0xd3       /* supervisor mode */
-        push {r0, lr}           /* save lr & pc */
+        push {r0, r1, lr}       /* save sp, lr & pc */
+
 
         /* Save data in the SysStruct: */
+        mov r1, sp              /* register data */
         mov r0, r1
-        add r0, #0x40           /* SysStruct */
+        add r0, #0x44           /* SysStruct */
         bl set_last_proc_data
-        add sp, #0x40
+        add sp, #0x44
 
         b halt_and_catch_fire
 
