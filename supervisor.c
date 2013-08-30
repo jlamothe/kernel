@@ -60,8 +60,8 @@ int init_new_thread(SysStruct *ss, int (*f)())
         return -1;
     offset = pid * STACK_SIZE;
     ss->stack_ptr[pid] = ss->stack + (STACK_SIZE * (pid + 1));
-    ss->reg_data[offset] = (int)f; /* pc */
-    ss->reg_data[offset + 1] = (int)halt_and_catch_fire; /* lr */
+    ss->reg_data[offset] = (int)halt_and_catch_fire; /* lr */
+    ss->reg_data[offset + 1] = (int)f; /* pc */
     ss->reg_data[offset + 2] = 0x10; /* SPSR */
     return pid;
 }
