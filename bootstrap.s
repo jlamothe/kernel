@@ -46,14 +46,14 @@ resume_thread:
         msr SPSR, r0
 
         /* Remaining registers: */
-        pop {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12}
+        pop {r0-r12}
 
         movs pc, lr             /* to user mode */
 
 catch_sw_interrupt:
 
         /* Save registers: */
-        push {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12}
+        push {r0-r12}
 
         /* Save SPSR: */
         mrs r0, SPSR
