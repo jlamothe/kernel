@@ -31,9 +31,9 @@ typedef struct
  * FUNCTION PROTOTYPES
  */
 
-int get_next_avail_pid(SysStruct *sys);
-int set_proc_data(SysStruct *ss, int *buf, int pid);
-int get_proc_data(SysStruct *ss, int *buf, int pid);
+int get_next_avail_pid(const SysStruct *sys);
+int set_proc_data(SysStruct *ss, const int *buf, int pid);
+int get_proc_data(const SysStruct *ss, int *buf, int pid);
 
 /*
  * FUNCTION DEFINITIONS
@@ -54,7 +54,7 @@ int init_sys_struct(SysStruct *ss)
     return 0;
 }
 
-int init_new_thread(SysStruct *ss, int (*f)())
+int init_new_thread(SysStruct *ss, int const (*f)())
 {
     int pid;
     if(ss == NULL)
@@ -70,7 +70,7 @@ int init_new_thread(SysStruct *ss, int (*f)())
     return pid;
 }
 
-int get_next_avail_pid(SysStruct *ss)
+int get_next_avail_pid(const SysStruct *ss)
 {
     int i;
     if(ss == NULL)
@@ -95,21 +95,21 @@ int set_last_pid(SysStruct *ss, int pid)
     return 0;
 }
 
-int get_last_pid(SysStruct *ss)
+int get_last_pid(const SysStruct *ss)
 {
     if(ss == NULL)
         return -1;
     return ss->last_pid;
 }
 
-int set_last_proc_data(SysStruct *ss, int *buf)
+int set_last_proc_data(SysStruct *ss, const int *buf)
 {
     if(ss == NULL)
         return 1;
     return set_proc_data(ss, buf, ss->last_pid);
 }
 
-int set_proc_data(SysStruct *ss, int *buf, int pid)
+int set_proc_data(SysStruct *ss, const int *buf, int pid)
 {
     if(ss == NULL || buf == NULL)
         return 1;
@@ -119,12 +119,12 @@ int set_proc_data(SysStruct *ss, int *buf, int pid)
     return 0;
 }
 
-int get_last_proc_data(SysStruct *ss, int *buf)
+int get_last_proc_data(const SysStruct *ss, int *buf)
 {
     return get_proc_data(ss, buf, ss->last_pid);
 }
 
-int get_proc_data(SysStruct *ss, int *buf, int pid)
+int get_proc_data(const SysStruct *ss, int *buf, int pid)
 {
     if(ss == NULL || buf == NULL)
         return 1;

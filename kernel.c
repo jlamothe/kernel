@@ -9,7 +9,7 @@
  * FUNCTION DEFINITIONS
  */
 
-void bwputs(char *s)
+void bwputs(const char *s)
 {
     while(*s)
     {
@@ -19,7 +19,7 @@ void bwputs(char *s)
     }
 }
 
-void my_memcpy(void *dest, void *src, int size)
+void my_memcpy(void *dest, const void *src, int size)
 {
     int i;
     if(size < 0)
