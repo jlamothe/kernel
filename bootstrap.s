@@ -10,9 +10,11 @@ _start:
 
         /* Set the interrupt vector: */
         ldr r0, =jump_sw_interrupt
-        ldmfd r0, {r1, r2}
-        mov r0, #0x8
-        stmfd r0, {r1, r2}
+        mov r1, #8
+        ldr r2, [r0, #0]
+        str r2, [r1, #0]
+        ldr r2, [r0, #4]
+        str r2, [r1, #4]
 
         /* Initialize the first process: */
         mov r0, sp              /* SysStruct */
