@@ -90,9 +90,9 @@ void halt_and_catch_fire()
 int set_last_pid(SysStruct *ss, int pid)
 {
     if(ss == NULL)
-        return 1;
+        return -1;
     ss->last_pid = pid;
-    return 0;
+    return pid;
 }
 
 int get_last_pid(const SysStruct *ss)
@@ -105,33 +105,35 @@ int get_last_pid(const SysStruct *ss)
 int set_last_proc_data(SysStruct *ss, const int *buf)
 {
     if(ss == NULL)
-        return 1;
+        return -1;
     return set_proc_data(ss, buf, ss->last_pid);
 }
 
 int set_proc_data(SysStruct *ss, const int *buf, int pid)
 {
     if(ss == NULL || buf == NULL)
-        return 1;
+        return -1;
     if(pid < 0 || pid >= NUM_PROCS)
-        return 1;
+        return -2;
     my_memcpy(ss->proc[pid].reg_data, buf, 0x44);
-    return 0;
+    return pid;
 }
 
 int get_last_proc_data(const SysStruct *ss, int *buf)
 {
+    if(ss == NULL)
+        return -1;
     return get_proc_data(ss, buf, ss->last_pid);
 }
 
 int get_proc_data(const SysStruct *ss, int *buf, int pid)
 {
     if(ss == NULL || buf == NULL)
-        return 1;
+        return -1;
     if(pid < 0 || pid >= NUM_PROCS)
-        return 1;
+        return -2;
     my_memcpy(buf, ss->proc[pid].reg_data, 0x44);
-    return 0;
+    return pid;
 }
 
 /* jl */
