@@ -34,8 +34,7 @@ resume_thread:
         mov r1, sp              /* buffer */
         bl get_last_proc_data
 
-        pop {r0, r1, r2}        /* sp, lr & pc */
-        mov lr, r2              /* save pc for later */
+        pop {r0, r1, lr}        /* sp, lr & pc */
 
         /* Set sytem sp and lr: */
         msr CPSR_c, #0xdf       /* system mode */
@@ -68,7 +67,6 @@ catch_sw_interrupt:
         msr CPSR_c, #0xd3       /* supervisor mode */
         push {r0, r1, lr}       /* save sp, lr & pc */
 
-
         /* Save data in the SysStruct: */
         mov r1, sp              /* register data */
         mov r0, r1
@@ -76,7 +74,10 @@ catch_sw_interrupt:
         bl set_last_proc_data
         add sp, #0x44
 
-        b halt_and_catch_fire
+        /* Return control: */
+        mov r0, sp
+        bl get_last_pid
+        b resume_thread
 
 jump_sw_interrupt:
         ldr pc, interrupt_addr
