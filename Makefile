@@ -1,6 +1,6 @@
 CC=arm-linux-gnueabi-gcc
 
-CFLAGS=-ansi -pedantic -Wall -Wextra -march=armv6 -msoft-float -fPIC -mapcs-frame
+CFLAGS=-ansi -pedantic -Wall -Wextra -march=armv6 -msoft-float -fPIC -mapcs-frame -marm
 LDFLAGS=-nostdlib -N -Ttext=0x10000
 
 kernel.elf: bootstrap.o kernel.o main.o supervisor.o
