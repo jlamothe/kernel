@@ -88,3 +88,7 @@ interrupt_addr:
 call_sw_interrupt:
         svc #0
         mov pc, lr
+
+        .global debug
+        .type debug, %function
+debug:  b debug
