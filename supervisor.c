@@ -67,6 +67,7 @@ int init_new_thread(SysStruct *ss, int const (*f)())
     ss->proc[pid].reg_data[1] =
         (int)halt_and_catch_fire; /* lr */
     ss->proc[pid].reg_data[2] = (int)f; /* pc */
+    ss->proc[pid].reg_data[3] = 0x10; /* SPSR */
     return pid;
 }
 
