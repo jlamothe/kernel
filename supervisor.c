@@ -32,7 +32,7 @@ int init_sys_struct(SysStruct *ss)
     if(ss == NULL)
         return 1;
     for(i = 0; i < NUM_PROCS; i++)
-        ss->proc[i].reg_data[0] = 0;
+        set_reg(ss, i, SP_REG, 0);
     return 0;
 }
 
@@ -44,12 +44,10 @@ int init_new_thread(SysStruct *ss, int (*f)())
     pid = get_next_avail_pid(ss);
     if(pid < 0 || pid >= NUM_PROCS)
         return -1;
-    ss->proc[pid].reg_data[0] =
-        (int)(ss->proc[pid].stack + STACK_SIZE); /* sp */
-    ss->proc[pid].reg_data[1] =
-        (int)halt_and_catch_fire; /* lr */
-    ss->proc[pid].reg_data[2] = (int)f; /* pc */
-    ss->proc[pid].reg_data[3] = 0x10; /* SPSR */
+    set_reg(ss, pid, SP_REG, (int)(ss->proc[pid].stack + STACK_SIZE));
+    set_reg(ss, pid, LR_REG, (int)halt_and_catch_fire);
+    set_reg(ss, pid, PC_REG, (int)f);
+    set_spsr(ss, pid, 0x10);
     return pid;
 }
 
@@ -59,7 +57,7 @@ int get_next_avail_pid(const SysStruct *ss)
     if(ss == NULL)
         return -1;
     for(i = 0; i < NUM_PROCS; i++)
-        if(!ss->proc[i].reg_data[0])
+        if(!get_reg(ss, i, SP_REG))
             return i;
     return -1;
 }
