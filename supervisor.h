@@ -6,6 +6,9 @@
 
 #define STACK_SIZE 256
 #define NUM_PROCS 16
+#define SP_REG 13
+#define LR_REG 14
+#define PC_REG 15
 
 /*
  * STRUCTS
