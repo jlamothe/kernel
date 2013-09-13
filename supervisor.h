@@ -37,6 +37,7 @@ int set_last_pid(SysStruct *ss, int pid);
 int get_last_pid(const SysStruct *ss);
 int set_last_proc_data(SysStruct *ss, const int *buf);
 int get_last_proc_data(const SysStruct *ss, int *buf);
+void call_sw_interrupt(void);
 
 #endif  /* SUPERVISOR_H */
 
