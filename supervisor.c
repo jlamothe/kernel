@@ -2,38 +2,16 @@
  * INCLUDES
  */
 
+#include "supervisor.h"
 #include "kernel.h"
-
-/*
- * DEFINES
- */
-
-#define STACK_SIZE 256
-#define NUM_PROCS 16
-
-/*
- * STRUCTS
- */
-
-typedef struct
-{
-    int stack[STACK_SIZE];
-    int reg_data[17];
-} ProcData;
-
-typedef struct
-{
-    ProcData proc[NUM_PROCS];
-    int last_pid;
-} SysStruct;
 
 /*
  * FUNCTION PROTOTYPES
  */
 
-int get_next_avail_pid(const SysStruct *sys);
-int set_proc_data(SysStruct *ss, const int *buf, int pid);
-int get_proc_data(const SysStruct *ss, int *buf, int pid);
+static int get_next_avail_pid(const SysStruct *ss);
+static int set_proc_data(SysStruct *ss, const int *buf, int pid);
+static int get_proc_data(const SysStruct *ss, int *buf, int pid);
 
 /*
  * FUNCTION DEFINITIONS
@@ -54,7 +32,7 @@ int init_sys_struct(SysStruct *ss)
     return 0;
 }
 
-int init_new_thread(SysStruct *ss, int const (*f)())
+int init_new_thread(SysStruct *ss, int (*f)())
 {
     int pid;
     if(ss == NULL)
