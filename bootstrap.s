@@ -74,6 +74,10 @@ catch_sw_interrupt:
         bl set_last_proc_data
         add sp, #0x44
 
+        /* Process the interrupt: */
+        mov r0, sp
+        bl process_sw_interrupt
+
         /* Return control: */
         mov r0, sp
         bl get_last_pid

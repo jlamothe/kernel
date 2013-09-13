@@ -16,6 +16,7 @@ void halt_and_catch_fire(void);
 void bwputs(const char *s);
 void my_memcpy(void *dest, const void *src, int size);
 void debug(int val);
+int fork(void);
 
 #endif  /* KERNEL_H */
 
