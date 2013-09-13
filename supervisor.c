@@ -12,6 +12,8 @@
 static int get_next_avail_pid(const SysStruct *ss);
 static int set_proc_data(SysStruct *ss, const int *buf, int pid);
 static int get_proc_data(const SysStruct *ss, int *buf, int pid);
+static int get_reg(const SysStruct *ss, int pid, int num);
+static int set_reg(SysStruct *ss, int pid, int num, int val);
 
 /*
  * FUNCTION DEFINITIONS
@@ -113,6 +115,34 @@ int get_proc_data(const SysStruct *ss, int *buf, int pid)
         return -2;
     my_memcpy(buf, ss->proc[pid].reg_data, 0x44);
     return pid;
+}
+
+int get_reg(const SysStruct *ss, int pid, int num)
+{
+    if(ss == NULL)
+        return 0xdeadbeef;
+    if(pid < 0 || pid >= NUM_PROCS)
+        return 0xdeadbeef;
+    if(num < 0 || num > 15)
+        return 0xdeadbeef;
+    if(num < 13)
+        return ss->proc[pid].reg_data[num + 4];
+    return ss->proc[pid].reg_data[num - 13];
+}
+
+int set_reg(SysStruct *ss, int pid, int num, int val)
+{
+    if(ss == NULL)
+        return 1;
+    if(pid < 0 || pid >= NUM_PROCS)
+        return 2;
+    if(num < 0 || num > 15)
+        return 3;
+    if(num < 13)
+        ss->proc[pid].reg_data[num + 4] = val;
+    else
+        ss->proc[pid].reg_data[num - 13] = val;
+    return 0;
 }
 
 /* jl */
