@@ -14,6 +14,8 @@ static int set_proc_data(SysStruct *ss, const int *buf, int pid);
 static int get_proc_data(const SysStruct *ss, int *buf, int pid);
 static int get_reg(const SysStruct *ss, int pid, int num);
 static int set_reg(SysStruct *ss, int pid, int num, int val);
+static int get_spsr(const SysStruct *ss, int pid);
+static int set_spsr(SysStruct *ss, int pid, int val);
 
 /*
  * FUNCTION DEFINITIONS
@@ -142,6 +144,25 @@ int set_reg(SysStruct *ss, int pid, int num, int val)
         ss->proc[pid].reg_data[num + 4] = val;
     else
         ss->proc[pid].reg_data[num - 13] = val;
+    return 0;
+}
+
+static int get_spsr(const SysStruct *ss, int pid)
+{
+    if(ss == NULL)
+        return 0xdeadbeef;
+    if(pid < 0 || pid >= NUM_PROCS)
+        return 0xdeadbeef;
+    return ss->proc[pid].reg_data[3];
+}
+
+static int set_spsr(SysStruct *ss, int pid, int val)
+{
+    if(ss == NULL)
+        return 1;
+    if(pid < 0 || pid >= NUM_PROCS)
+        return 2;
+    ss->proc[pid].reg_data[3] = val;
     return 0;
 }
 
