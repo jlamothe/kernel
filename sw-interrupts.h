@@ -10,7 +10,8 @@
  * DEFINES
  */
 
-#define FORK_INT 0
+#define NICE_INT 0
+#define FORK_INT 1
 
 /*
  * FUNCTION PROTOTYPES

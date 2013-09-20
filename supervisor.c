@@ -9,7 +9,6 @@
  * FUNCTION PROTOTYPES
  */
 
-static int get_next_avail_pid(const SysStruct *ss);
 static int set_proc_data(SysStruct *ss, const int *buf, int pid);
 static int get_proc_data(const SysStruct *ss, int *buf, int pid);
 

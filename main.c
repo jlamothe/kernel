@@ -3,6 +3,7 @@
  */
 
 #include "kernel.h"
+#include "syscalls.h"
 
 /*
  * FUNCTION DEFINITIONS
@@ -19,6 +20,7 @@ int main(void)
         bwputs("Main thread!\n");
     else
         bwputs("Child thread!\n");
+    nice();
     return 0;
 }
 

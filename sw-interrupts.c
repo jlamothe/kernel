@@ -3,11 +3,26 @@
  */
 
 #include "sw-interrupts.h"
+#include "syscalls.h"
 #include "kernel.h"
+#include "supervisor.h"
+
+/*
+ * FUNCTION PROTOTYPES
+ */
+
+int on_nice(SysStruct *ss, int pid);
+int on_fork(SysStruct *ss, int pid);
+
 
 /*
  * FUNCTION DEFINITIONS
  */
+
+void nice()
+{
+    call_sw_interrupt(NICE_INT, NULL);
+}
 
 int fork()
 {
@@ -29,6 +44,9 @@ int process_sw_interrupt(SysStruct *ss)
     switch(id)
     {
 
+    case NICE_INT:
+        return on_nice(ss, pid);
+
     case FORK_INT:
         return on_fork(ss, pid);
 
@@ -39,10 +57,40 @@ int process_sw_interrupt(SysStruct *ss)
 
 }
 
+int on_nice(SysStruct *ss, int pid)
+{
+    int p = pid;
+    do
+    {
+        p++;
+        if(p >= NUM_PROCS)
+            p = 0;
+        if(get_reg(ss, p, SP_REG))
+            break;
+    }
+    while(p != pid);
+    return set_last_pid(ss, p);
+}
+
 int on_fork(SysStruct *ss, int pid)
 {
-    /* TODO: implement fork */
-    return set_reg(ss, pid, 0, -1);
+    int p = get_next_avail_pid(ss), offset;
+    int *spa, *spb;
+    if(p < 0)
+        return set_reg(ss, pid, 0, -1);
+    my_memcpy(&(ss->proc[p]),
+              &(ss->proc[pid]),
+              sizeof(ss->proc[pid]));
+    spa = (int *)get_reg(ss, pid, SP_REG);
+    offset = spa - ss->proc[pid].stack;
+    spb = ss->proc[pid].stack + offset;
+    if(set_reg(ss, p, SP_REG, (int)spb))
+        return 1;
+    if(set_reg(ss, pid, 0, p))
+        return 2;
+    if(set_reg(ss, p, 0, 0))
+        return 3;
+    return 0;
 }
 
 /* jl */

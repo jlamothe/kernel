@@ -1,4 +1,5 @@
 #ifndef SUPERVISOR_H
+#define SUPERVISOR_H
 
 /*
  * DEFINES
@@ -42,6 +43,7 @@ int get_reg(const SysStruct *ss, int pid, int num);
 int set_reg(SysStruct *ss, int pid, int num, int val);
 int get_spsr(const SysStruct *ss, int pid);
 int set_spsr(SysStruct *ss, int pid, int val);
+int get_next_avail_pid(const SysStruct *ss);
 
 #endif  /* SUPERVISOR_H */
 
