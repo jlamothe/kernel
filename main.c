@@ -20,7 +20,6 @@ int main(void)
         bwputs("Main thread!\n");
     else
         bwputs("Child thread!\n");
-    nice();
     return 0;
 }
 

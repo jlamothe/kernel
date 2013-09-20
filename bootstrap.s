@@ -41,7 +41,7 @@ resume_thread:
         mov sp, r0
         mov lr, r1
         msr CPSR_c, #0xd3       /* supervisor mode */
-        
+
         /* SPSR: */
         pop {r0}
         msr SPSR, r0
@@ -85,9 +85,9 @@ catch_sw_interrupt:
 
 jump_sw_interrupt:
         ldr pc, interrupt_addr
-interrupt_addr: 
+interrupt_addr:
         .word catch_sw_interrupt
-        
+
         .global call_sw_interrupt
         .type call_interrupt, %function
 call_sw_interrupt:

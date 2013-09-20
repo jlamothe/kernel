@@ -4,6 +4,7 @@
 
 #include "supervisor.h"
 #include "kernel.h"
+#include "syscalls.h"
 
 /*
  * FUNCTION PROTOTYPES
@@ -11,6 +12,7 @@
 
 static int set_proc_data(SysStruct *ss, const int *buf, int pid);
 static int get_proc_data(const SysStruct *ss, int *buf, int pid);
+static void end_process();
 
 /*
  * FUNCTION DEFINITIONS
@@ -40,7 +42,7 @@ int init_new_thread(SysStruct *ss, int (*f)())
     if(pid < 0 || pid >= NUM_PROCS)
         return -1;
     set_reg(ss, pid, SP_REG, (int)(ss->proc[pid].stack + STACK_SIZE));
-    set_reg(ss, pid, LR_REG, (int)halt_and_catch_fire);
+    set_reg(ss, pid, LR_REG, (int)end_process);
     set_reg(ss, pid, PC_REG, (int)f);
     set_spsr(ss, pid, 0x10);
     return pid;
@@ -157,6 +159,12 @@ int set_spsr(SysStruct *ss, int pid, int val)
         return 2;
     ss->proc[pid].reg_data[3] = val;
     return 0;
+}
+
+void end_process()
+{
+    while(1)
+        nice();
 }
 
 /* jl */
