@@ -13,7 +13,7 @@
 
 int on_nice(SysStruct *ss, int pid);
 int on_fork(SysStruct *ss, int pid);
-
+int on_get_pid(SysStruct *ss, int pid);
 
 /*
  * FUNCTION DEFINITIONS
@@ -27,6 +27,11 @@ void nice()
 int fork()
 {
     return call_sw_interrupt(FORK_INT, NULL);
+}
+
+int get_pid()
+{
+    return call_sw_interrupt(GET_PID_INT, NULL);
 }
 
 int process_sw_interrupt(SysStruct *ss)
@@ -49,6 +54,9 @@ int process_sw_interrupt(SysStruct *ss)
 
     case FORK_INT:
         return on_fork(ss, pid);
+
+    case GET_PID_INT:
+        return on_get_pid(ss, pid);
 
     default:
         return -1;
@@ -90,6 +98,12 @@ int on_fork(SysStruct *ss, int pid)
         return 2;
     if(set_reg(ss, p, 0, 0))
         return 3;
+    return 0;
+}
+
+int on_get_pid(SysStruct *ss, int pid)
+{
+    set_reg(ss, pid, 0, pid);
     return 0;
 }
 

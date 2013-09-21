@@ -12,6 +12,7 @@
 
 #define NICE_INT 0
 #define FORK_INT 1
+#define GET_PID_INT 2
 
 /*
  * FUNCTION PROTOTYPES
