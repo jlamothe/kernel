@@ -11,9 +11,9 @@
  * FUNCTION PROTOTYPES
  */
 
-int on_nice(SysStruct *ss, int pid);
-int on_fork(SysStruct *ss, int pid);
-int on_get_pid(SysStruct *ss, int pid);
+static int on_nice(SysStruct *ss, int pid);
+static int on_fork(SysStruct *ss, int pid);
+static int on_get_pid(SysStruct *ss, int pid);
 
 /*
  * FUNCTION DEFINITIONS
