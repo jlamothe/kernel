@@ -78,9 +78,11 @@ catch_sw_interrupt:
         mov r0, sp
         bl process_sw_interrupt
 
-        /* Return control: */
+        /* Get the last PID: */
         mov r0, sp
         bl get_last_pid
+
+        /* Resume the thread: */
         b resume_thread
 
 jump_sw_interrupt:

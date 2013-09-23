@@ -77,7 +77,8 @@ int on_nice(SysStruct *ss, int pid)
             break;
     }
     while(p != pid);
-    return set_last_pid(ss, p);
+    set_last_pid(ss, p);
+    return 0;
 }
 
 int on_fork(SysStruct *ss, int pid)
@@ -91,7 +92,7 @@ int on_fork(SysStruct *ss, int pid)
               sizeof(ss->proc[pid]));
     spa = (int *)get_reg(ss, pid, SP_REG);
     offset = spa - ss->proc[pid].stack;
-    spb = ss->proc[pid].stack + offset;
+    spb = ss->proc[p].stack + offset;
     if(set_reg(ss, p, SP_REG, (int)spb))
         return 1;
     if(set_reg(ss, pid, 0, p))
